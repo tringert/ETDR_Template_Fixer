@@ -83,7 +83,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FirstControl.cs" />
     <Compile Include="HelpWindow.cs">
       <SubType>Form</SubType>
     </Compile>

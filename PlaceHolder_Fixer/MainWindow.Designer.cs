@@ -38,13 +38,16 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.btnMinimize = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbTitle = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.lbDragAndDrop = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tbInfo
             // 
+            this.tbInfo.AllowDrop = true;
             this.tbInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.tbInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tbInfo.ForeColor = System.Drawing.Color.White;
@@ -55,6 +58,7 @@
             this.tbInfo.Size = new System.Drawing.Size(400, 163);
             this.tbInfo.TabIndex = 0;
             this.tbInfo.TabStop = false;
+            this.tbInfo.Enter += new System.EventHandler(this.tbInfo_Enter);
             // 
             // btnFilePicker
             // 
@@ -99,6 +103,7 @@
             this.tbFilePicker.Size = new System.Drawing.Size(400, 21);
             this.tbFilePicker.TabIndex = 3;
             this.tbFilePicker.TabStop = false;
+            this.tbFilePicker.Enter += new System.EventHandler(this.tbFilePicker_Enter);
             // 
             // tbDirectoryPicker
             // 
@@ -114,6 +119,7 @@
             this.tbDirectoryPicker.Size = new System.Drawing.Size(400, 21);
             this.tbDirectoryPicker.TabIndex = 4;
             this.tbDirectoryPicker.TabStop = false;
+            this.tbDirectoryPicker.Enter += new System.EventHandler(this.tbDirectoryPicker_Enter);
             // 
             // btnStart
             // 
@@ -177,16 +183,16 @@
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
-            // label1
+            // lbTitle
             // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.DimGray;
-            this.label1.Location = new System.Drawing.Point(18, 11);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(151, 13);
-            this.label1.TabIndex = 10;
-            this.label1.Text = "ÉTDR sablon helykitöltő javító";
-            this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label1_MouseDown);
+            this.lbTitle.AutoSize = true;
+            this.lbTitle.ForeColor = System.Drawing.Color.DimGray;
+            this.lbTitle.Location = new System.Drawing.Point(18, 14);
+            this.lbTitle.Name = "lbTitle";
+            this.lbTitle.Size = new System.Drawing.Size(151, 13);
+            this.lbTitle.TabIndex = 10;
+            this.lbTitle.Text = "ÉTDR sablon helykitöltő javító";
+            this.lbTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lbTitle_MouseDown);
             // 
             // pictureBox1
             // 
@@ -198,13 +204,24 @@
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
+            // lbDragAndDrop
+            // 
+            this.lbDragAndDrop.AllowDrop = true;
+            this.lbDragAndDrop.AutoSize = true;
+            this.lbDragAndDrop.Location = new System.Drawing.Point(174, 219);
+            this.lbDragAndDrop.Name = "lbDragAndDrop";
+            this.lbDragAndDrop.Size = new System.Drawing.Size(94, 13);
+            this.lbDragAndDrop.TabIndex = 11;
+            this.lbDragAndDrop.Text = "Ide húzhat fájlokat";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(25)))), ((int)(((byte)(25)))));
             this.ClientSize = new System.Drawing.Size(604, 335);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lbDragAndDrop);
+            this.Controls.Add(this.lbTitle);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.btnMinimize);
             this.Controls.Add(this.btnClose);
@@ -244,7 +261,9 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnMinimize;
         private System.Windows.Forms.Button btnHelp;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbTitle;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.Label lbDragAndDrop;
     }
 }
 

@@ -22,6 +22,9 @@ namespace PlaceHolder_Fixer
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
+        [DllImport("user32.dll")]
+        static extern bool HideCaret(IntPtr hWnd);
+
 
         public MainWindow()
         {
@@ -30,8 +33,65 @@ namespace PlaceHolder_Fixer
             btnFilePicker.FlatAppearance.BorderColor = Color.FromArgb(100, 100, 100);
             btnDirectoryPicker.FlatAppearance.BorderColor = Color.FromArgb(100, 100, 100);
             btnStart.FlatAppearance.BorderColor = Color.FromArgb(100, 100, 100);
+
+            tbInfo.AllowDrop = true;
+            tbInfo.DragEnter += new DragEventHandler(DragEnterEvent);
+            tbInfo.DragDrop += new DragEventHandler(DragDropEvent);
+            lbDragAndDrop.DragEnter += new DragEventHandler(DragEnterEvent);
+            lbDragAndDrop.DragDrop += new DragEventHandler(DragDropEvent);
+
+            HideCaret(tbFilePicker.Handle);
         }
 
+        private void FixFiles()
+        {
+            if (files.Count == 0)
+            {
+                return;
+            }
+
+            tbInfo.Text = "";
+            lbDragAndDrop.SendToBack();
+
+            for (int i = 0; i < files.Count; i++)
+            {
+                string fileName = files[i].FullName;
+
+                tbInfo.Text += fileName + " javítása..." + Environment.NewLine;
+
+                using (DocX document = DocX.Load(fileName))
+                {
+                    for (int j = 0; j < placeHolders.Count; j++)
+                    {
+                        document.ReplaceText(placeHolders[j], placeHolders[j]);
+                    }
+                    document.SaveAs(CreateNewFileName(files[i]));
+                } // Release this document from memory.
+            }
+
+            tbInfo.Text += Environment.NewLine + "--- A javítás elkészült! ---";
+        }
+
+        private string CreateNewFileName(FileInfo fi)
+        {
+            string result = String.Empty;
+            string fileName = fi.Name.Replace(".docx", "");
+            return fi.FullName.Replace(fileName, fileName + "_jav");
+        }
+
+        private void HideCaret(object sender)
+        {
+            var textBox = sender as TextBox;
+
+            BeginInvoke((Action)delegate
+            {
+                HideCaret(textBox.Handle);
+                textBox.SelectAll();
+            });
+
+        }
+
+        #region Events
         private void btnFilePicker_Click(object sender, EventArgs e)
         {
             files.Clear();
@@ -47,6 +107,8 @@ namespace PlaceHolder_Fixer
                 file = new FileInfo(openFileDialog1.FileName);
                 tbDirectoryPicker.Text = "";
                 tbFilePicker.Text = file.FullName;
+                tbFilePicker.SelectionStart = tbFilePicker.Text.Length;
+                tbFilePicker.ScrollToCaret();
             }
 
             files.Add(file);
@@ -68,6 +130,8 @@ namespace PlaceHolder_Fixer
             {
                 tbFilePicker.Text = "";
                 tbDirectoryPicker.Text = folderDlg.SelectedPath;
+                tbDirectoryPicker.SelectionStart = tbDirectoryPicker.Text.Length;
+                tbDirectoryPicker.ScrollToCaret();
                 Environment.SpecialFolder root = folderDlg.RootFolder;
             }
             else
@@ -85,37 +149,7 @@ namespace PlaceHolder_Fixer
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(tbFilePicker.Text) && String.IsNullOrEmpty(tbDirectoryPicker.Text))
-            {
-                return;
-            }
-
-            tbInfo.Text = "";
-
-            for (int i = 0; i < files.Count; i++)
-            {
-                string fileName = files[i].FullName;
-
-                tbInfo.Text += fileName + " javítása..." + Environment.NewLine;
-
-                using (DocX document = DocX.Load(fileName))
-                {
-                    for (int j = 0; j < placeHolders.Count; j++)
-                    {
-                        document.ReplaceText(placeHolders[j], placeHolders[j]);
-                    }
-                    document.SaveAs(CreateName(files[i]));
-                } // Release this document from memory.
-            }
-
-            tbInfo.Text += Environment.NewLine + "--- A javítás elkészült! ---";
-        }
-
-        private string CreateName(FileInfo fi)
-        {
-            string result = String.Empty;
-            string fileName = fi.Name.Replace(".docx", "");
-            return fi.FullName.Replace(fileName, fileName + "_jav");
+            FixFiles();
         }
 
         private void btnFilePicker_MouseEnter(object sender, EventArgs e)
@@ -167,7 +201,7 @@ namespace PlaceHolder_Fixer
             }
         }
 
-        private void label1_MouseDown(object sender, MouseEventArgs e)
+        private void lbTitle_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -181,5 +215,54 @@ namespace PlaceHolder_Fixer
             HelpWindow helpWindow = new HelpWindow();
             helpWindow.ShowDialog();
         }
+
+        private void DragEnterEvent(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Copy;
+        }
+
+        private void DragDropEvent(object sender, DragEventArgs e)
+        {
+           DragDropProcess(sender, e);
+        }
+
+        private void DragDropProcess(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                lbDragAndDrop.SendToBack();
+                string[] fileNames = (string[])e.Data.GetData(DataFormats.FileDrop);
+                files.Clear();
+                tbInfo.Text = String.Empty;
+                tbFilePicker.Text = String.Empty;
+                tbDirectoryPicker.Text = String.Empty;
+
+                for (int i = 0; i < fileNames.Length; i++)
+                {
+                    file = new FileInfo(fileNames[i]);
+                    files.Add(file);
+
+                    tbInfo.Text += file.Name + " hozzáadva" + Environment.NewLine;
+                }
+
+                FixFiles();
+            }
+        }
+
+        private void tbFilePicker_Enter(object sender, EventArgs e)
+        {
+            HideCaret(sender);
+        }
+
+        private void tbDirectoryPicker_Enter(object sender, EventArgs e)
+        {
+            HideCaret(sender);
+        }
+
+        private void tbInfo_Enter(object sender, EventArgs e)
+        {
+            HideCaret(sender);
+        }
+        #endregion
     }
 }
