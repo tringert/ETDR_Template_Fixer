@@ -76,7 +76,7 @@ namespace PlaceHolder_Fixer
         {
             string result = String.Empty;
             string fileName = fi.Name.Replace(".docx", "");
-            return fi.FullName.Replace(fileName, fileName + "_jav");
+            return fi.DirectoryName + @"\" + fileName + fi.Extension;
         }
 
         private void HideCaret(object sender)
@@ -143,7 +143,10 @@ namespace PlaceHolder_Fixer
 
             foreach (FileInfo fi in di.GetFiles())
             {
-                files.Add(fi);
+                if (fi.Extension == ".docx")
+                {
+                    files.Add(fi);
+                }
             }
         }
 
