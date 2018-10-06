@@ -22,31 +22,31 @@
         "Entry"
         {
         "MsmKey" = "8:_10883CCAB2504F4FFB136874852FA987"
-        "OwnerKey" = "8:_D942037DE9904E868F5D681450723F08"
+        "OwnerKey" = "8:_CFD435AA8CEF4455A7F2E14611C7AE99"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1BC48530C73AEE44F6C245BD3F312604"
-        "OwnerKey" = "8:_D942037DE9904E868F5D681450723F08"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2571C1FAFBE54E348221796D84FFFCC9"
+        "MsmKey" = "8:_9E78093EE26A48FBA450F3C19F475498"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D942037DE9904E868F5D681450723F08"
+        "MsmKey" = "8:_A1701776A1B4A008FAC83836ECF8CBF7"
+        "OwnerKey" = "8:_CFD435AA8CEF4455A7F2E14611C7AE99"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CFD435AA8CEF4455A7F2E14611C7AE99"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D942037DE9904E868F5D681450723F08"
+        "OwnerKey" = "8:_CFD435AA8CEF4455A7F2E14611C7AE99"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -58,7 +58,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1BC48530C73AEE44F6C245BD3F312604"
+        "OwnerKey" = "8:_A1701776A1B4A008FAC83836ECF8CBF7"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -207,14 +207,34 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1BC48530C73AEE44F6C245BD3F312604"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E78093EE26A48FBA450F3C19F475498"
+            {
+            "SourcePath" = "8:ETDR_icon.ico"
+            "TargetName" = "8:ÉTDR_icon.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_C85D88D1B6104D39BC4C27485112B031"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A1701776A1B4A008FAC83836ECF8CBF7"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Xceed.Words.NET, Version=1.2.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_1BC48530C73AEE44F6C245BD3F312604"
+                    "_A1701776A1B4A008FAC83836ECF8CBF7"
                     {
                     "Name" = "8:Xceed.Words.NET.dll"
                     "Attributes" = "3:512"
@@ -236,26 +256,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2571C1FAFBE54E348221796D84FFFCC9"
-            {
-            "SourcePath" = "8:..\\PlaceHolder_Fixer\\publish\\Install\\Installer\\ETDR_icon.ico"
-            "TargetName" = "8:ETDR_icon.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_C85D88D1B6104D39BC4C27485112B031"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
         }
@@ -326,7 +326,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ÉTDR sablon helykitöltő javító"
         "ProductCode" = "8:{18383786-620F-4BBB-B5C7-05486CC0D636}"
-        "PackageCode" = "8:{604D30FE-10B8-44BD-AD91-7FC92EA6EA25}"
+        "PackageCode" = "8:{6AD212A5-3F5D-4618-8972-287906E8081B}"
         "UpgradeCode" = "8:{A4FA215B-C471-4235-8A9F-A9A0EA5198EB}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -343,7 +343,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:ÉTDR sablon helykitöltő javító"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_2571C1FAFBE54E348221796D84FFFCC9"
+        "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -446,7 +446,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_9CCB91B456EA496AB76F1FEC74939B30"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1C2507502C9B4276874306F2E31D150E"
             {
             "Name" = "8:ÉTDR sablon javító"
             "Arguments" = "8:"
@@ -454,13 +454,13 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_D942037DE9904E868F5D681450723F08"
-            "Folder" = "8:_4049490998AD424C818CB5F90E8F5F32"
-            "WorkingFolder" = "8:_C85D88D1B6104D39BC4C27485112B031"
-            "Icon" = "8:_2571C1FAFBE54E348221796D84FFFCC9"
+            "Target" = "8:_CD0E4FC4D0DC485896052B8A014CC0C0"
+            "Folder" = "8:_CD0E4FC4D0DC485896052B8A014CC0C0"
+            "WorkingFolder" = "8:_CD0E4FC4D0DC485896052B8A014CC0C0"
+            "Icon" = "8:_9E78093EE26A48FBA450F3C19F475498"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_A52F26CB1C694AE69FC2AB7FA2C05140"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6C9E5B24F8894D8DA2A6AC78B9906358"
             {
             "Name" = "8:ÉTDR sablon javító"
             "Arguments" = "8:"
@@ -468,10 +468,10 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_D942037DE9904E868F5D681450723F08"
-            "Folder" = "8:_CD0E4FC4D0DC485896052B8A014CC0C0"
-            "WorkingFolder" = "8:_C85D88D1B6104D39BC4C27485112B031"
-            "Icon" = "8:_2571C1FAFBE54E348221796D84FFFCC9"
+            "Target" = "8:_4049490998AD424C818CB5F90E8F5F32"
+            "Folder" = "8:_4049490998AD424C818CB5F90E8F5F32"
+            "WorkingFolder" = "8:_4049490998AD424C818CB5F90E8F5F32"
+            "Icon" = "8:_9E78093EE26A48FBA450F3C19F475498"
             "Feature" = "8:"
             }
         }
@@ -883,7 +883,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_33103E0D87E84001A6002E20F3C55B6A"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_4ED4C40880D743318DE8918293EA22BD"
             {
             "SourcePath" = "8:"
             "TargetName" = "8:"
@@ -911,7 +911,7 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D942037DE9904E868F5D681450723F08"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CFD435AA8CEF4455A7F2E14611C7AE99"
             {
             "SourcePath" = "8:..\\PlaceHolder_Fixer\\obj\\Release\\PlaceHolder_Fixer.exe"
             "TargetName" = "8:"
