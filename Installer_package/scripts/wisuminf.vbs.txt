@@ -1,0 +1,1 @@
+This script is part of the Windows 10 SDK

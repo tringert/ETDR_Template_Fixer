@@ -1,0 +1,13 @@
+//This script replaces all resources in MyProg.exe with all the resources in MyProgNew.res	
+[FILENAMES]
+Exe=    ..\ETDR_template_fixer.exe
+SaveAs= ..\ETDR_template_fixer_installer.exe
+// Log=	reshack.log
+[COMMANDS]
+//delete all resources before...
+-delete	ICONGROUP,,
+-delete	VERSIONINFO,,
+-delete	STRINGTABLE,,
+-delete DIALOG,,
+//adding all the new resources
+-add ETDR_template_fixer_installer.res ,,,

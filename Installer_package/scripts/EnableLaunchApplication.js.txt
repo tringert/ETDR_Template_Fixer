@@ -1,0 +1,7 @@
+This file is from:
+https://onedrive.live.com/?cid=27E6A35D1A492AF7&id=27E6A35D1A492AF7%21498&parId=27E6A35D1A492AF7%21376&action=defaultclick
+
+Further informaion:
+https://blogs.msdn.microsoft.com/astebner/2006/08/12/mailbag-how-can-i-customize-an-msi-in-the-visual-studio-setupdeployment-project/
+
+Echoing messages on pop-up windows turned off due to automation

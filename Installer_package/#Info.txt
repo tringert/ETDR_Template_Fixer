@@ -1,0 +1,11 @@
+Creating a self-extraction installer package
+
+Prerequisites:
+- 7-zip installed
+- Orca installed
+- Resource Hacker installed (http://www.angusj.com/resourcehacker/)
+
+(Orca: database table editor for creating and editing Windows Installer packages and merge modules. This tool is only available in the Windows SDK Components for Windows Installer Developers. It is provided as an Orca.msi file. After installing the Windows SDK Components for Windows Installer Developers, double click Orca.msi to install the Orca.exe file.)
+
+
+Run "Create_installer_package.cmd" to create a 7z self-extraction package.

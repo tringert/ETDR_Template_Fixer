@@ -14,7 +14,7 @@ namespace PlaceHolder_Fixer
         FileInfo file;
         List<FileInfo> files = new List<FileInfo>();
 
-        // Mouse drag window move
+        // Lib for mouse drag window move
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
         [DllImportAttribute("user32.dll")]
@@ -22,6 +22,7 @@ namespace PlaceHolder_Fixer
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
+        // Lib for hiding the caret
         [DllImport("user32.dll")]
         static extern bool HideCaret(IntPtr hWnd);
 
@@ -30,19 +31,26 @@ namespace PlaceHolder_Fixer
         {
             InitializeComponent();
 
+            // Coloring the border
             btnFilePicker.FlatAppearance.BorderColor = Color.FromArgb(100, 100, 100);
             btnDirectoryPicker.FlatAppearance.BorderColor = Color.FromArgb(100, 100, 100);
             btnStart.FlatAppearance.BorderColor = Color.FromArgb(100, 100, 100);
 
+            // Allow Drop feature
             tbInfo.AllowDrop = true;
+            lbDragAndDrop.AllowDrop = true;
+
+            // Subscribing to the Drag&Drop events
             tbInfo.DragEnter += new DragEventHandler(DragEnterEvent);
             tbInfo.DragDrop += new DragEventHandler(DragDropEvent);
             lbDragAndDrop.DragEnter += new DragEventHandler(DragEnterEvent);
             lbDragAndDrop.DragDrop += new DragEventHandler(DragDropEvent);
 
+            // Hiding caret from textboxes
             HideCaret(tbFilePicker.Handle);
         }
 
+        // Process for fixing the specified files
         private void FixFiles()
         {
             if (files.Count == 0)
@@ -50,35 +58,47 @@ namespace PlaceHolder_Fixer
                 return;
             }
 
+            // Clearing out the info box
             tbInfo.Text = "";
+
+            // Hiding the drop label to make place for the infos
             lbDragAndDrop.SendToBack();
 
+            // Iterating over the files
             for (int i = 0; i < files.Count; i++)
             {
                 string fileName = files[i].FullName;
 
+                // Displaying some info
                 tbInfo.Text += fileName + " javítása..." + Environment.NewLine;
 
+                // Opening the file
                 using (DocX document = DocX.Load(fileName))
                 {
                     for (int j = 0; j < placeHolders.Count; j++)
                     {
+                        // Replacing the placeholders so the they will be present between one xml text tag
                         document.ReplaceText(placeHolders[j], placeHolders[j]);
                     }
+
+                    // Saving the result in new name
                     document.SaveAs(CreateNewFileName(files[i]));
-                } // Release this document from memory.
+
+                } // Releasing the file from memory
             }
 
             tbInfo.Text += Environment.NewLine + "--- A javítás elkészült! ---";
         }
 
+        // Adding "_jav" at the end of the filenames
         private string CreateNewFileName(FileInfo fi)
         {
             string result = String.Empty;
             string fileName = fi.Name.Replace(".docx", "");
-            return fi.DirectoryName + @"\" + fileName + fi.Extension;
+            return $"{fi.DirectoryName}\\{fileName}_jav{fi.Extension}"; //  + @"\" + fileName + "_jav" + fi.Extension;
         }
 
+        // Hiding the annoying caret in the textboxes
         private void HideCaret(object sender)
         {
             var textBox = sender as TextBox;
@@ -91,56 +111,123 @@ namespace PlaceHolder_Fixer
 
         }
 
-        #region Events
-        private void btnFilePicker_Click(object sender, EventArgs e)
+        // Processing the drag drop
+        private void DragDropProcess(object sender, DragEventArgs e)
         {
+            // Make sure the drop contains files not other objects
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                // Hiding the label because information text is going to be displayed
+                lbDragAndDrop.SendToBack();
+
+                // Get the filenames
+                string[] fileNames = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                // The property must be cleared out because it may contain data from previous work
+                files.Clear();
+
+                // Clearing out the textboxe
+                tbInfo.Text = String.Empty;
+                tbFilePicker.Text = String.Empty;
+                tbDirectoryPicker.Text = String.Empty;
+
+                // Get the files and adding them to the list
+                for (int i = 0; i < fileNames.Length; i++)
+                {
+                    file = new FileInfo(fileNames[i]);
+                    files.Add(file);
+
+                    // Displaying info
+                    tbInfo.Text += file.Name + " hozzáadva" + Environment.NewLine;
+                }
+
+                // Start the fix process immediately
+                FixFiles();
+            }
+        }
+
+        // Processing the selected file
+        private void FileProcess()
+        {
+            // Clearing out the file list
             files.Clear();
 
+            // Open a file picker window
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
+                // Filtering out other file types
                 Filter = "Docx Fájlok|*.docx",
+
+                // Set the window title
                 Title = "Válasszon egy .docx fájlt"
             };
 
+            // When a file had been selected
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
+                // Get the file
                 file = new FileInfo(openFileDialog1.FileName);
+
+                // Clearing out the directory textbox
                 tbDirectoryPicker.Text = "";
+
+                // Fill the file picker textbox
                 tbFilePicker.Text = file.FullName;
+
+                // Scroll to the end of the file picker textbox. So when the full filename is longer than the textbox, the filename is visible.
                 tbFilePicker.SelectionStart = tbFilePicker.Text.Length;
                 tbFilePicker.ScrollToCaret();
             }
 
+            // Adding the fileto the list
             files.Add(file);
         }
 
-        private void btnDirectoryPicker_Click(object sender, EventArgs e)
+        // Processing the selected directory
+        private void DirectoryProcess()
         {
+            // Clearing out the file list
             files.Clear();
 
+            // A directory picker window
             FolderBrowserDialog folderDlg = new FolderBrowserDialog
             {
+                // Set the window title
                 Description = "Válassza ki a mappát, ahol a feldolgozandó sablonok vannak",
+
+                // Disable the new folder button
                 ShowNewFolderButton = false
             };
 
+            // Displaying the directory picker window
             DialogResult result = folderDlg.ShowDialog();
 
+            // When a directory had been selected
             if (result == DialogResult.OK)
             {
+                // Clearing out the other textbox
                 tbFilePicker.Text = "";
+
+                // Set the text for the actual textbox
                 tbDirectoryPicker.Text = folderDlg.SelectedPath;
+
+                // Scroll to the end of the file picker textbox. So when the full filename is longer than the textbox, the filename is visible.
                 tbDirectoryPicker.SelectionStart = tbDirectoryPicker.Text.Length;
                 tbDirectoryPicker.ScrollToCaret();
+
+                // Start at the root
                 Environment.SpecialFolder root = folderDlg.RootFolder;
             }
             else
             {
+                // When the selection is not happened, return
                 return;
             }
 
+            // Get the selected folder
             DirectoryInfo di = new DirectoryInfo(tbDirectoryPicker.Text);
 
+            // Adding each .docx file to the list
             foreach (FileInfo fi in di.GetFiles())
             {
                 if (fi.Extension == ".docx")
@@ -150,51 +237,74 @@ namespace PlaceHolder_Fixer
             }
         }
 
+        #region Events
+        // Click on "Fájl kiválasztása" button
+        private void btnFilePicker_Click(object sender, EventArgs e)
+        {
+            FileProcess();
+        }
+
+        // Click event on "Mappa kiválasztása" button
+        private void btnDirectoryPicker_Click(object sender, EventArgs e)
+        {
+            DirectoryProcess();
+        }
+
+        // Click event on "Javítás" button
         private void btnStart_Click(object sender, EventArgs e)
         {
             FixFiles();
         }
 
+        // A nice blue border when hover
         private void btnFilePicker_MouseEnter(object sender, EventArgs e)
         {
             btnFilePicker.FlatAppearance.BorderColor = Color.MediumBlue;
         }
 
+        // Change back to the default border
         private void btnFilePicker_MouseLeave(object sender, EventArgs e)
         {
             btnFilePicker.FlatAppearance.BorderColor = Color.FromArgb(100, 100, 100);
         }
 
+        // A nice blue border when hover
         private void btnDirectoryPicker_MouseEnter(object sender, EventArgs e)
         {
             btnDirectoryPicker.FlatAppearance.BorderColor = Color.MediumBlue;
         }
 
+        // Change back to the default border
         private void btnDirectoryPicker_MouseLeave(object sender, EventArgs e)
         {
             btnDirectoryPicker.FlatAppearance.BorderColor = Color.FromArgb(100, 100, 100);
         }
 
+        // A nice blue border when hover
         private void btnStart_MouseEnter(object sender, EventArgs e)
         {
             btnStart.FlatAppearance.BorderColor = Color.MediumBlue;
         }
 
+        // Change back to the default border
         private void btnStart_MouseLeave(object sender, EventArgs e)
         {
             btnStart.FlatAppearance.BorderColor = Color.FromArgb(100, 100, 100);
         }
 
+        // Click event on window close button
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
+        // Click event on window minimize button
         private void btnMinimize_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
         }
 
+        // Event on dragging the window
         private void MainWindow_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -204,6 +314,7 @@ namespace PlaceHolder_Fixer
             }
         }
 
+        // Event on dragging the window (when grabbing the title)
         private void lbTitle_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -213,55 +324,38 @@ namespace PlaceHolder_Fixer
             }
         }
 
+        // Event on help button
         private void btnHelp_Click(object sender, EventArgs e)
         {
             HelpWindow helpWindow = new HelpWindow();
             helpWindow.ShowDialog();
         }
 
+        // Enter event when dragging
         private void DragEnterEvent(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Copy;
         }
 
+        // Drag drop event
         private void DragDropEvent(object sender, DragEventArgs e)
         {
            DragDropProcess(sender, e);
         }
 
-        private void DragDropProcess(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                lbDragAndDrop.SendToBack();
-                string[] fileNames = (string[])e.Data.GetData(DataFormats.FileDrop);
-                files.Clear();
-                tbInfo.Text = String.Empty;
-                tbFilePicker.Text = String.Empty;
-                tbDirectoryPicker.Text = String.Empty;
-
-                for (int i = 0; i < fileNames.Length; i++)
-                {
-                    file = new FileInfo(fileNames[i]);
-                    files.Add(file);
-
-                    tbInfo.Text += file.Name + " hozzáadva" + Environment.NewLine;
-                }
-
-                FixFiles();
-            }
-        }
-
+        // Hiding the caret when entering the textbox
         private void tbFilePicker_Enter(object sender, EventArgs e)
         {
             HideCaret(sender);
         }
 
+        // Hiding the caret when entering the textbox
         private void tbDirectoryPicker_Enter(object sender, EventArgs e)
         {
             HideCaret(sender);
         }
 
+        // Hiding the caret when entering the textbox
         private void tbInfo_Enter(object sender, EventArgs e)
         {
             HideCaret(sender);
