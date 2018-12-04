@@ -225,3 +225,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Installer package
+Installer_package/*

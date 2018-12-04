@@ -446,7 +446,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1C2507502C9B4276874306F2E31D150E"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_174A1FE59EF44297B4D97E591C0A673A"
             {
             "Name" = "8:ÉTDR sablon javító"
             "Arguments" = "8:"
@@ -454,13 +454,13 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_CD0E4FC4D0DC485896052B8A014CC0C0"
-            "Folder" = "8:_CD0E4FC4D0DC485896052B8A014CC0C0"
-            "WorkingFolder" = "8:_CD0E4FC4D0DC485896052B8A014CC0C0"
+            "Target" = "8:_CFD435AA8CEF4455A7F2E14611C7AE99"
+            "Folder" = "8:_6EC487F87E824CB39C4869D736BBCB4D"
+            "WorkingFolder" = "8:_C85D88D1B6104D39BC4C27485112B031"
             "Icon" = "8:_9E78093EE26A48FBA450F3C19F475498"
             "Feature" = "8:"
             }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6C9E5B24F8894D8DA2A6AC78B9906358"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_69EDAC40C14843ACABEC4EB300A53FFC"
             {
             "Name" = "8:ÉTDR sablon javító"
             "Arguments" = "8:"
@@ -468,9 +468,23 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_4049490998AD424C818CB5F90E8F5F32"
+            "Target" = "8:_CFD435AA8CEF4455A7F2E14611C7AE99"
+            "Folder" = "8:_CD0E4FC4D0DC485896052B8A014CC0C0"
+            "WorkingFolder" = "8:_C85D88D1B6104D39BC4C27485112B031"
+            "Icon" = "8:_9E78093EE26A48FBA450F3C19F475498"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7FAD1A1E50DB4D38A78AC8234449B5F8"
+            {
+            "Name" = "8:ÉTDR sablon javító"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_CFD435AA8CEF4455A7F2E14611C7AE99"
             "Folder" = "8:_4049490998AD424C818CB5F90E8F5F32"
-            "WorkingFolder" = "8:_4049490998AD424C818CB5F90E8F5F32"
+            "WorkingFolder" = "8:_C85D88D1B6104D39BC4C27485112B031"
             "Icon" = "8:_9E78093EE26A48FBA450F3C19F475498"
             "Feature" = "8:"
             }

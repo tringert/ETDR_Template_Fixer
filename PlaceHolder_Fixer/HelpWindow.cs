@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -17,6 +19,8 @@ namespace PlaceHolder_Fixer
         public HelpWindow()
         {
             InitializeComponent();
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
             this.Padding = new Padding(-10);
 
@@ -41,7 +45,7 @@ namespace PlaceHolder_Fixer
                 "tamas.tringer@gmail.com" +
                 Environment.NewLine +
                 Environment.NewLine +
-                "Verzió: 1.0";
+                "Verzió: " + fvi.FileVersion;
 
             tbText.Text = helpText;
         }
