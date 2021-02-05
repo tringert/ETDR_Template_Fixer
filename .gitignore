@@ -228,3 +228,5 @@ $RECYCLE.BIN/
 
 # Installer package
 Installer_package/*
+.vs
+packages

@@ -68,7 +68,7 @@ try
 	view.Close();
 
 	// Insert the new CheckBox control
-	sql = "INSERT INTO `Control` (`Dialog_`, `Control`, `Type`, `X`, `Y`, `Width`, `Height`, `Attributes`, `Property`, `Text`, `Control_Next`, `Help`) VALUES ('FinishedForm', 'CheckboxLaunch', 'CheckBox', '18', '117', '343', '12', '3', 'LAUNCHAPP', '{\\VSI_MS_Sans_Serif13.0_0_0}" + checkboxText + "', 'CloseButton', '|')";
+	sql = "INSERT INTO `Control` (`Dialog_`, `Control`, `Type`, `X`, `Y`, `Width`, `Height`, `Attributes`, `Property`, `Text`, `Control_Next`, `Help`) VALUES ('FinishedForm', 'CheckboxLaunch', 'CheckBox', '18', '117', '343', '12', '3', 'LAUNCHAPP', '{\\VSI_MS_Sans_Serif13.0_0_0}" + checkboxText + "', 'Line1', '|')";
 	view = database.OpenView(sql);
 	view.Execute();
 	view.Close();
