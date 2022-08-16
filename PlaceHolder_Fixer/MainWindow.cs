@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using Xceed.Words.NET;
 
@@ -10,7 +14,7 @@ namespace PlaceHolder_Fixer
 {
     public partial class MainWindow : Form
     {
-        List<string> placeHolders = new List<string> { "<#ecs_kf_telefonszam>", "<#cimzettek_nemugyfelek>", "<#cimzettek_nemugyfelek_tordelt>", "<#cimzettek_osszes>", "<#cimzettek_osszes_tordelt>", "<#cimzettek_ugyfelek>", "<#cimzettek_ugyfelek_tordelt>", "<#cimzett_hivatalok>", "<#cimzett_hivatalok_teljes>", "<#cimzett_partnerek>", "<#cimzettek>", "<#cimzettek_tordelt>", "<#masolatotkapo_partnerek>", "<#masolatotkapo_osszes>", "<#masolatotkapo_osszes_tordelt>", "<#masolatotkapo_hivatalok>", "<#masolatotkapo_hivatalok_teljes>", "<#nyilvanos_cimzettek_kerelmezok>", "<#nyilvanos_cimzettek_kerelmezok_tordelt>", "<#nyilvanos_cimzettek_meghatalmazottak>", "<#nyilvanos_cimzettek_meghatalmazottak_tordelt>", "<#nyilvanos_cimzettek_szomszedok>", "<#nyilvanos_cimzettek_szomszedok_tordelt>", "<#nyilvanos_cimzettek_tervezok>", "<#nyilvanos_cimzettek_tervezok_tordelt>", "<#nyilvanos_cimzettek_tulajdonosok>", "<#nyilvanos_cimzettek_tulajdonosok_tordelt>", "<#rejtett_cimzettek_kerelmezok>", "<#rejtett_cimzettek_kerelmezok_tordelt>", "<#rejtett_cimzettek_szakhatosagok>", "<#rejtett_cimzettek_szakhatosagok_tordelt>", "<#rejtett_cimzettek_szomszedok>", "<#rejtett_cimzettek_szomszedok_tordelt>", "<#rejtett_cimzettek_tervezok>", "<#rejtett_cimzettek_tervezok_tordelt>", "<#pado_clerk_position>", "<#pado_clerk_email>", "<#pado_clerk_phone>", "<#iktatas_datuma>", "<#iktatast_kero_neve>", "<#pado_FilingDate>", "<#pado_FilingAskingClerk>", "<#eljarasi_cselekmeny_iktatoszama>", "<#kapcsolodo_ingatlanok>", "<#kelte>", "<#kiadmanyozo_beosztasa>", "<#kiadmanyozo_neve>", "<#table_kiserolap>", "<#eljcsel_office_cim_teljes>", "<#ecs_kf_cim_teljes>", "<#eljaras_telepules_jaras>", "<#targyi_ingatlanok>", "<#targyi_ingatlanok_varoscim>", "<#targyi_ingatlanok_varoshrsz>", "<#eljaras_epitesi_tevekenyseg>", "<#eljaras_azonosito>", "<#eljaras_hianypotlas>", "<#eljaras_hianypotlas_teljesites>", "<#pr_ProcessNumber>", "<#pado_StartDate>", "<#eljaras_telepules_kisterseg>", "<#eljaras_letrehoz_datum>", "<#eljaras_megjegyzes>", "<#eljaras_megnevezese>", "<#eljaras_megye>", "<#eljaras_telepules>", "<#eljaras_ksh>", "<#eljaras_tipusa>", "<#pado_clerk>", "<#eljaras_letrehoz_user>", "<#erintettek_hatosagok>", "<#erintettek_hatosagok_tordelt>", "<#erintettek_kerelmezok>", "<#erintettek_kerelmezok_tordelt>", "<#erintettek_osszes>", "<#erintettek_osszes_tordelt>", "<#erintettek_szakhatosagok>", "<#erintettek_szakhatosagok_tordelt>", "<#erintettek_szomszedok>", "<#erintettek_szomszedok_tordelt>", "<#erintettek_tervezok>", "<#erintettek_tervezok_tordelt>", "<#kerelem_benyujtas_idopontja>", "<#kerelem_leirasa>", "<#ecs_authorityrequestrequesttype>", "<#eljarasi_cselekmeny_feladoja>", "<#eljcsel_jogerositesdatuma>", "<#ecs_kf_DisplayName>", "<#processaction_senddate>", "<#ecs_kf_MothersName>", "<#ecs_kf_cim_egyebcim>", "<#ecs_kf_EgyebCim>", "<#ecs_kf_UniqueId>", "<#ecs_kf_email>", "<#ecs_kf_MessageEmail>", "<#ecs_kf_cim_hazszam>", "<#ecs_kf_Hazszam>", "<#ecs_kf_cim_irsz>", "<#ecs_kf_Iranyitoszam>", "<#ecs_kf_FirstName>", "<#ecs_kf_cim_kozterulet>", "<#ecs_kf_Kozterulet>", "<#ecs_kf_cim_kozteruletjelleg>", "<#ecs_kf_KozteruletJelleg>", "<#ecs_kf_KshKod>", "<#ecs_kf_Name>", "<#ecs_kf_BirthDate>", "<#ecs_kf_BirthPlace>", "<#ecs_kf_BirthName>", "<#ecs_kf_BirthCountry>", "<#ecs_kf_cim_telepules>", "<#ecs_kf_Telepules>", "<#ecs_kf_cim_ksh>", "<#ecs_kf_LastName>", "<#ecs_off_email>", "<#ecs_off_fax>", "<#ecs_off_cim_hazszam>", "<#ecs_off_cim_irsz>", "<#ecs_off_cim_kozterulet>", "<#ecs_off_cim_kozteruletjelleg>", "<#ecs_off_phone>", "<#ecs_off_cim_telepules>", "<#ecs_off_cim_ksh>", "<#ecs_off_web>", "<#eljcsel_office_egyebcim>", "<#eljcsel_office_hazszam>", "<#eljcsel_office_irsz>", "<#eljcsel_office_kozteruletjelleg>", "<#eljcsel_office_kozterulet>", "<#eljcsel_office_ksh>", "<#eljcsel_office_megjegyzes>", "<#eljcsel_office_nev1>", "<#eljcsel_office_nev2>", "<#eljcsel_office_nev3>", "<#eljcsel_office_nev>", "<#eljcsel_office_telefonszam>", "<#eljcsel_office_telepules>", "<#processaction_subject>", "<#ecs_tipus>", "<#ecs_off_helysziniszemleideje>", "<#ecs_off_helysziniszemlehelye>", "<#ecs_off_helysziniszemleidotartama>", "<#indoklas>", "<#filing_clerk_position>", "<#filing_clerk_email>", "<#filing_clerk>", "<#filing_clerk_phone>", "<#eljarasi_cselekmeny_iktato_szama>", "<#hataskorrel_feljogositott_szemely_beosztasa>", "<#hataskorrel_feljogositott_szemely_neve>", "<#pado_FilingNumber>", "<#pado_filingidentifier>", "<#irat_leiras>", "<#irat_megnevezes>", "<#irat_targy>", "<#kuldo>", "<#ecs_pontos_tipus>", "<#indoklas_ugyfeli_beadvany>", "<#table_kiserolap_ugyfeli_beadvany>", "<#erintettek_kotelezettek>", "<#erintettek_kotelezettek_tordelt>" };
+        List<string> placeHolders = new List<string> { "<#ecs_kf_telefonszam>", "<#cimzettek_nemugyfelek>", "<#cimzettek_nemugyfelek_tordelt>", "<#cimzettek_osszes>", "<#cimzettek_osszes_tordelt>", "<#cimzettek_ugyfelek>", "<#cimzettek_ugyfelek_tordelt>", "<#cimzett_hivatalok>", "<#cimzett_hivatalok_teljes>", "<#cimzett_partnerek>", "<#cimzettek>", "<#cimzettek_tordelt>", "<#masolatotkapo_partnerek>", "<#masolatotkapo_osszes>", "<#masolatotkapo_osszes_tordelt>", "<#masolatotkapo_hivatalok>", "<#masolatotkapo_hivatalok_teljes>", "<#nyilvanos_cimzettek_kerelmezok>", "<#nyilvanos_cimzettek_kerelmezok_tordelt>", "<#nyilvanos_cimzettek_meghatalmazottak>", "<#nyilvanos_cimzettek_meghatalmazottak_tordelt>", "<#nyilvanos_cimzettek_szomszedok>", "<#nyilvanos_cimzettek_szomszedok_tordelt>", "<#nyilvanos_cimzettek_tervezok>", "<#nyilvanos_cimzettek_tervezok_tordelt>", "<#nyilvanos_cimzettek_tulajdonosok>", "<#nyilvanos_cimzettek_tulajdonosok_tordelt>", "<#rejtett_cimzettek_kerelmezok>", "<#rejtett_cimzettek_kerelmezok_tordelt>", "<#rejtett_cimzettek_szakhatosagok>", "<#rejtett_cimzettek_szakhatosagok_tordelt>", "<#rejtett_cimzettek_szomszedok>", "<#rejtett_cimzettek_szomszedok_tordelt>", "<#rejtett_cimzettek_tervezok>", "<#rejtett_cimzettek_tervezok_tordelt>", "<#pado_clerk_position>", "<#pado_clerk_email>", "<#pado_clerk_phone>", "<#iktatas_datuma>", "<#iktatast_kero_neve>", "<#pado_FilingDate>", "<#pado_FilingAskingClerk>", "<#eljarasi_cselekmeny_iktatoszama>", "<#kapcsolodo_ingatlanok>", "<#kelte>", "<#kiadmanyozo_beosztasa>", "<#kiadmanyozo_neve>", "<#table_kiserolap>", "<#eljcsel_office_cim_teljes>", "<#ecs_kf_cim_teljes>", "<#eljaras_telepules_jaras>", "<#targyi_ingatlanok>", "<#targyi_ingatlanok_varoscim>", "<#targyi_ingatlanok_varoshrsz>", "<#eljaras_epitesi_tevekenyseg>", "<#eljaras_azonosito>", "<#eljaras_hianypotlas>", "<#eljaras_hianypotlas_teljesites>", "<#pr_ProcessNumber>", "<#pado_StartDate>", "<#eljaras_telepules_kisterseg>", "<#eljaras_letrehoz_datum>", "<#eljaras_megjegyzes>", "<#eljaras_megnevezese>", "<#eljaras_megye>", "<#eljaras_telepules>", "<#eljaras_ksh>", "<#eljaras_tipusa>", "<#pado_clerk>", "<#eljaras_letrehoz_user>", "<#erintettek_hatosagok>", "<#erintettek_hatosagok_tordelt>", "<#erintettek_kerelmezok>", "<#erintettek_kerelmezok_tordelt>", "<#erintettek_osszes>", "<#erintettek_osszes_tordelt>", "<#erintettek_szakhatosagok>", "<#erintettek_szakhatosagok_tordelt>", "<#erintettek_szomszedok>", "<#erintettek_szomszedok_tordelt>", "<#erintettek_tervezok>", "<#erintettek_tervezok_tordelt>", "<#kerelem_benyujtas_idopontja>", "<#kerelem_leirasa>", "<#ecs_authorityrequestrequesttype>", "<#eljarasi_cselekmeny_feladoja>", "<#eljcsel_jogerositesdatuma>", "<#ecs_kf_DisplayName>", "<#processaction_senddate>", "<#ecs_kf_MothersName>", "<#ecs_kf_cim_egyebcim>", "<#ecs_kf_EgyebCim>", "<#ecs_kf_UniqueId>", "<#ecs_kf_email>", "<#ecs_kf_MessageEmail>", "<#ecs_kf_cim_hazszam>", "<#ecs_kf_Hazszam>", "<#ecs_kf_cim_irsz>", "<#ecs_kf_Iranyitoszam>", "<#ecs_kf_FirstName>", "<#ecs_kf_cim_kozterulet>", "<#ecs_kf_Kozterulet>", "<#ecs_kf_cim_kozteruletjelleg>", "<#ecs_kf_KozteruletJelleg>", "<#ecs_kf_KshKod>", "<#ecs_kf_Name>", "<#ecs_kf_BirthDate>", "<#ecs_kf_BirthPlace>", "<#ecs_kf_BirthName>", "<#ecs_kf_BirthCountry>", "<#ecs_kf_cim_telepules>", "<#ecs_kf_Telepules>", "<#ecs_kf_cim_ksh>", "<#ecs_kf_LastName>", "<#ecs_off_email>", "<#ecs_off_fax>", "<#ecs_off_cim_hazszam>", "<#ecs_off_cim_irsz>", "<#ecs_off_cim_kozterulet>", "<#ecs_off_cim_kozteruletjelleg>", "<#ecs_off_phone>", "<#ecs_off_cim_telepules>", "<#ecs_off_cim_ksh>", "<#ecs_off_web>", "<#eljcsel_office_egyebcim>", "<#eljcsel_office_hazszam>", "<#eljcsel_office_irsz>", "<#eljcsel_office_kozteruletjelleg>", "<#eljcsel_office_kozterulet>", "<#eljcsel_office_ksh>", "<#eljcsel_office_megjegyzes>", "<#eljcsel_office_nev1>", "<#eljcsel_office_nev2>", "<#eljcsel_office_nev3>", "<#eljcsel_office_nev>", "<#eljcsel_office_telefonszam>", "<#eljcsel_office_telepules>", "<#processaction_subject>", "<#ecs_tipus>", "<#ecs_off_helysziniszemleideje>", "<#ecs_off_helysziniszemlehelye>", "<#ecs_off_helysziniszemleidotartama>", "<#indoklas>", "<#filing_clerk_position>", "<#filing_clerk_email>", "<#filing_clerk>", "<#filing_clerk_phone>", "<#eljarasi_cselekmeny_iktato_szama>", "<#hataskorrel_feljogositott_szemely_beosztasa>", "<#hataskorrel_feljogositott_szemely_neve>", "<#pado_FilingNumber>", "<#pado_filingidentifier>", "<#irat_leiras>", "<#irat_megnevezes>", "<#irat_targy>", "<#kuldo>", "<#ecs_pontos_tipus>", "<#indoklas_ugyfeli_beadvany>", "<#table_kiserolap_ugyfeli_beadvany>", "<#erintettek_kotelezettek>", "<#erintettek_kotelezettek_tordelt>", "<#eljaras_nyilvanos_adatai_info_qr>" };
         FileInfo file;
         List<FileInfo> files = new List<FileInfo>();
 
@@ -48,6 +52,50 @@ namespace PlaceHolder_Fixer
 
             // Hiding caret from textboxes
             HideCaret(tbFilePicker.Handle);
+
+            Thread thread = new Thread(UpdatePlaceholderList);
+            thread.Start();
+        }
+
+        private void UpdatePlaceholderList()
+        {
+            using (WebClient client = new WebClient())
+            {
+                byte[] placeholdersFromCloud = client.DownloadData("https://dok.e-epites.hu/ETDR/segedletek/helykitoltok.txt");
+
+                string newPlaceholderStrings = System.Text.Encoding.UTF8.GetString(placeholdersFromCloud);
+
+                List<string> newPlaceholders = newPlaceholderStrings.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToList();
+
+                string pattern = "^<#[a-zA-Z_]*>$";
+
+                newPlaceholders = newPlaceholders.Where(p => IsMatch(p)).ToList();
+
+                bool IsMatch(string placeHolder) => Regex.Match(placeHolder, pattern, RegexOptions.IgnoreCase).Success;
+
+                if (newPlaceholders.Any())
+                {
+                    placeHolders = newPlaceholders;
+                }
+
+                AppendTextToInfoBox($"{ DateTime.Now.ToString("HH:mm:ss") } - A helykitöltők frissítése megtörtént");
+            }
+        }
+
+        private void AppendTextToInfoBox(string message)
+        {
+            tbInfo.Invoke((MethodInvoker)delegate {
+                // Running on the UI thread
+                tbInfo.Text += message + Environment.NewLine;
+            });
+        }
+
+        private void ClearInfoBox()
+        {
+            tbInfo.Invoke((MethodInvoker)delegate {
+                // Running on the UI thread
+                tbInfo.Text = string.Empty;
+            });
         }
 
         // Process for fixing the specified files
@@ -58,8 +106,7 @@ namespace PlaceHolder_Fixer
                 return;
             }
 
-            // Clearing out the info box
-            tbInfo.Text = "";
+            ClearInfoBox();
 
             // Hiding the drop label to make place for the infos
             lbDragAndDrop.SendToBack();
@@ -69,8 +116,7 @@ namespace PlaceHolder_Fixer
             {
                 string fileName = files[i].FullName;
 
-                // Displaying some info
-                tbInfo.Text += fileName + " javítása..." + Environment.NewLine;
+                AppendTextToInfoBox(fileName + " javítása...");
 
                 // Opening the file
                 using (DocX document = DocX.Load(fileName))
@@ -87,27 +133,26 @@ namespace PlaceHolder_Fixer
                 } // Releasing the file from memory
             }
 
-            tbInfo.Text += Environment.NewLine + "--- A javítás elkészült! ---";
+            AppendTextToInfoBox(Environment.NewLine + "--- A javítás elkészült! ---");
         }
 
         // Adding "_jav" at the end of the filenames
         private string CreateNewFileName(FileInfo fi)
         {
             string fileName = fi.Name.Replace(".docx", "");
-            return $"{fi.DirectoryName}\\{fileName}_jav{fi.Extension}"; //  + @"\" + fileName + "_jav" + fi.Extension;
+            return $"{fi.DirectoryName}\\{fileName}_jav{fi.Extension}";
         }
 
         // Hiding the annoying caret in the textboxes
         private void HideCaret(object sender)
         {
-            var textBox = sender as TextBox;
+            TextBox textBox = sender as TextBox;
 
             BeginInvoke((Action)delegate
             {
                 HideCaret(textBox.Handle);
                 textBox.SelectAll();
             });
-
         }
 
         // Processing the drag drop
@@ -125,10 +170,10 @@ namespace PlaceHolder_Fixer
                 // The property must be cleared out because it may contain data from previous work
                 files.Clear();
 
-                // Clearing out the textboxe
-                tbInfo.Text = String.Empty;
-                tbFilePicker.Text = String.Empty;
-                tbDirectoryPicker.Text = String.Empty;
+                ClearInfoBox();
+
+                tbFilePicker.Text = string.Empty;
+                tbDirectoryPicker.Text = string.Empty;
 
                 // Get the files and adding them to the list
                 for (int i = 0; i < fileNames.Length; i++)
@@ -137,7 +182,7 @@ namespace PlaceHolder_Fixer
                     files.Add(file);
 
                     // Displaying info
-                    tbInfo.Text += file.Name + " hozzáadva" + Environment.NewLine;
+                    AppendTextToInfoBox(file.Name + " hozzáadva");
                 }
 
                 // Start the fix process immediately
@@ -178,7 +223,7 @@ namespace PlaceHolder_Fixer
                 tbFilePicker.ScrollToCaret();
             }
 
-            // Adding the fileto the list
+            // Adding the file to the list
             files.Add(file);
         }
 

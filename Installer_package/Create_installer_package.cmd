@@ -1,7 +1,7 @@
 @ECHO OFF
 
 REM -- Copy binaries from VS project
-xcopy ..\PlaceHolder_Fixer_Setup\Debug\* binaries\ /Y
+xcopy ..\PlaceHolder_Fixer_Setup\Release\* binaries\ /Y
 
 REM -- Adding the "Run application after setup" option
 scripts\EnableLaunchApplication.js binaries\PlaceHolder_Fixer_Setup.msi
